@@ -9,10 +9,12 @@ Example:
 
 Anna Meier is a Premium segment customer, classified as Low risk, based in Zurich. In March, she takes out a loan. In June, she moves to Geneva. In September, a portfolio review reclassifies her as Medium risk.
 
-Date     City    Segment      Risk      Event
-Jan 2023 Zurich  Premium      Low       Baseline
-Jun 2023 Geneva  Premium      Low       City changed
-Sep 2023 Geneva  Premium      Medium    Risk reclassified
+| Date     | City   | Segment | Risk   | Event             |
+|----------|--------|---------|--------|-------------------|
+| Jan 2023 | Zurich | Premium | Low    | Baseline          |
+| Jun 2023 | Geneva | Premium | Low    | City changed      |
+| Sep 2023 | Geneva | Premium | Medium | Risk reclassified |
+
 
 A system that overwrites records cannot answer: "What was Anna's risk rating when she took the loan in March?"
 
@@ -26,25 +28,22 @@ Basel III mandates point-in-time risk reporting
 GDPR requires audit trails of data changes
 One compliance failure costs more than years of the additional storage SCD2 requires
 
+## Architecture overview
 
-
-# Architecture overview
-
+```text
 seeds/
-└── raw_customers.csv          ← Two time snapshots simulating CDC input
++-- raw_customers.csv
 
 models/
-├── staging/
-│   └── stg_customers.sql      ← Clean and cast only, no business logic
-└── marts/
-    ├── dim_customers_scd2.sql  ← Core SCD2 model (partitioned + clustered + incremental)
-    └── dim_customers_current.sql ← Thin view for analyst consumption
++-- staging/
+|   +-- stg_customers.sql
++-- marts/
+    +-- dim_customers_scd2.sql
+    +-- dim_customers_current.sql
 
 tests/
-├── assert_one_current_record_per_customer.sql
-└── assert_no_overlapping_validity_windows.sql
++-- assert_one_current_record_per_customer.sql
++-- assert_no_overlapping_validity_windows.sql
 
-decisions.md                   ← Every design decision with reasoning and trade-offs
-
-
-
+decisions.md                ← Design decisions, reasoning, and trade-offs
+```
