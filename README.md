@@ -1,7 +1,7 @@
 # temporal-customer-modeling-dbt
 Production-grade SCD Type 2 implementation in dbt - tracks customer profile changes over time with full history preservation, point-in-time querying, and regulatory audit support. Includes partitioning, clustering, incremental processing, and data quality tests. Swiss banking context.
 
-# The business problem
+# The Business problem
 
 A bank's operational system only stores what is true right now. Every update overwrites the previous state. But regulators, auditors, and analysts need to know what was true at any point in the past.
 
@@ -43,6 +43,8 @@ models/
 tests/
 ├── assert_one_current_record_per_customer.sql
 └── assert_no_overlapping_validity_windows.sql
+
+decisions.md                   ← Every design decision with reasoning and trade-offs
 
 
 
